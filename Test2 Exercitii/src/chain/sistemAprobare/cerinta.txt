@@ -1,0 +1,20 @@
+Problemă — Chain of Responsibility
+
+O firmă are un sistem pentru aprobarea cererilor de cumpărare.
+
+O cerere are o valoare în lei. În funcție de valoare, cererea poate fi aprobată de:
+
+TeamLeader - aprobă cereri de maximum 500 lei
+Manager - aprobă cereri de maximum 2000 lei
+Director - aprobă cereri de maximum 10000 lei
+
+Dacă valoarea cererii este mai mare de 10000 lei, cererea este respinsă.
+
+Trebuie să folosești Chain of Responsibility, astfel încât cererea să pornească de la TeamLeader, iar dacă acesta nu o poate aproba, să o trimită mai departe către Manager, apoi către Director.
+
+Se dă interfața:
+
+public interface AprobareHandler {
+    void setNext(AprobareHandler next);
+    void aprobaCerere(double suma);
+}

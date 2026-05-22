@@ -1,0 +1,196 @@
+7. Exemplu foarte ușor: aprobare concediu
+
+Cerinta:
+
+O cerere de concediu poate fi aprobată astfel:
+- TeamLeader aprobă maximum 2 zile
+- Manager aprobă maximum 5 zile
+- Director aprobă maximum 10 zile
+Dacă cererea depășește 10 zile, este respinsă.
+
+Asta este Chain.
+
+Clase:
+Handler:
+AprobareConcediuHandler
+
+ConcreteHandler:
+TeamLeaderHandler
+ManagerHandler
+DirectorHandler
+
+strategy.Main:
+leagă lanțul și trimite cererea
+Clasa abstractă
+public abstract class AprobareConcediuHandler {
+    protected AprobareConcediuHandler next;
+
+    public void setNext(AprobareConcediuHandler next) {
+        this.next = next;
+    }
+
+    public abstract void aproba(int zile);
+}
+TeamLeaderHandler
+public class TeamLeaderHandler extends AprobareConcediuHandler {
+
+    @Override
+    public void aproba(int zile) {
+        if (zile <= 2) {
+            System.out.println("Cererea a fost aprobată de Team Leader.");
+        } else if (next != null) {
+            next.aproba(zile);
+        } else {
+            System.out.println("Cererea a fost respinsă.");
+        }
+    }
+}
+ManagerHandler
+public class ManagerHandler extends AprobareConcediuHandler {
+
+    @Override
+    public void aproba(int zile) {
+        if (zile <= 5) {
+            System.out.println("Cererea a fost aprobată de Manager.");
+        } else if (next != null) {
+            next.aproba(zile);
+        } else {
+            System.out.println("Cererea a fost respinsă.");
+        }
+    }
+}
+DirectorHandler
+public class DirectorHandler extends AprobareConcediuHandler {
+
+    @Override
+    public void aproba(int zile) {
+        if (zile <= 10) {
+            System.out.println("Cererea a fost aprobată de Director.");
+        } else {
+            System.out.println("Cererea a fost respinsă. Prea multe zile.");
+        }
+    }
+}
+strategy.Main
+public class strategy.Main {
+    public static void main(String[] args) {
+        AprobareConcediuHandler teamLeader = new TeamLeaderHandler();
+        AprobareConcediuHandler manager = new ManagerHandler();
+        AprobareConcediuHandler director = new DirectorHandler();
+
+        teamLeader.setNext(manager);
+        manager.setNext(director);
+
+        teamLeader.aproba(1);
+        teamLeader.aproba(4);
+        teamLeader.aproba(8);
+        teamLeader.aproba(15);
+    }
+}
+8. Ce trebuie să reții pentru test
+Chain = lanț de procesatori.
+Fiecare procesator are next.
+În main leg handlerii cu setNext().
+Apelez doar primul handler.
+Fiecare handler decide:
+   - rezolv eu
+   - sau trimit mai departe
+
+Formula ta de învățat:
+
+if (potRezolva) {
+    // rezolv
+} else if (next != null) {
+    next.handle(cerere);
+} else {
+    // resping cererea
+}
+
+Asta apare aproape în orice Chain.
+
+9. Diferența față de Strategy
+Strategy = aleg o variantă de algoritm.
+Chain = trec prin mai multe verificări/procesatori.
+
+Strategy:
+
+aleg tarif normal SAU tarif noapte
+
+Chain:
+
+cererea trece pe la TeamLeader -> Manager -> Director
+
+Pentru tine, cea mai importantă regulă este asta:
+
+La Strategy, contextul are atribut de tip interfață.
+La Chain, fiecare handler are atribut next către următorul handler.
+
+if (request <= 10) {
+
+de ce 10
+S-a gândit timp de două secunde
+
+10 era doar un exemplu inventat în problema cu concediul.
+
+Acolo am zis:
+
+if (request <= 10) {
+    System.out.println("Handler A a rezolvat cererea.");
+}
+
+Adică: handlerul A poate rezolva doar cereri de maximum 10.
+
+Nu este o regulă fixă pentru Chain.
+
+La Chain, numărul din if vine mereu din cerință.
+
+Exemple:
+
+Pentru concediu:
+
+if (zile <= 2) {
+    // aprobă Team Leader
+}
+
+Pentru manager:
+
+if (zile <= 5) {
+    // aprobă Manager
+}
+
+Pentru director:
+
+if (zile <= 10) {
+    // aprobă Director
+}
+
+Pentru problema cu bancomatul, nu mai ai 10 ca limită generală. Ai valoarea bancnotei:
+
+if (suma >= 50) {
+    // dau bancnote de 50
+}
+
+sau:
+
+if (suma >= valoareBancnota) {
+    int nrBancnote = suma / valoareBancnota;
+    int rest = suma % valoareBancnota;
+}
+
+Deci regula este:
+
+Numărul din if vine din responsabilitatea handlerului.
+
+La bancomat:
+
+HandlerBancnota50 -> lucrează cu 50
+HandlerBancnota20 -> lucrează cu 20
+HandlerBancnota10 -> lucrează cu 10
+
+Nu memora 10. Memorează forma:
+
+if (potRezolvaCererea) {
+    // rezolv
+} else if (next != null) {
+    next.handle(cerere);
+}

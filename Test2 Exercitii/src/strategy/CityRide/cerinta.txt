@@ -1,0 +1,27 @@
+3p. Compania voastră dezvoltă o aplicație de ride-sharing numită CityRide.
+
+Aplicația trebuie să calculeze prețul unei curse în funcție de tipul de tarif ales de utilizator:
+
+tarif normal: prețul este distanță * 3;
+tarif de noapte: prețul este distanță * 5;
+tarif de weekend: prețul este distanță * 4.
+
+Arhitectul aplicației cere o soluție prin care:
+
+modul de calcul al prețului să poată fi schimbat ușor;
+clasa care procesează cursa să nu depindă direct de un anumit tarif;
+în viitor să poată fi adăugate alte tipuri de tarif fără modificarea clasei principale.
+
+Se dă interfața:
+
+public interface FareStrategy {
+    double calculateFare(double distance);
+}
+
+1.5p. Testați implementarea în metoda main prin crearea a 3 scenarii:
+
+cursă cu tarif normal
+cursă cu tarif de noapte
+cursă cu tarif de weekend
+
+Pentru fiecare scenariu, afișați prețul cursei.

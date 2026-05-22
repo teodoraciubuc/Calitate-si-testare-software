@@ -1,0 +1,27 @@
+3p. Compania voastră dezvoltă o aplicație de streaming video numită Netflex Player.
+
+Aplicația trebuie să redea videoclipuri pe mai multe tipuri de dispozitive. În funcție de dispozitivul ales, videoclipul trebuie comprimat diferit înainte de redare:
+
+pentru telefon se folosește compresie H264;
+pentru browser web se folosește compresie MPEG;
+pentru televizor smart se folosește compresie HEVC.
+
+Arhitectul aplicației vă cere să găsiți o soluție prin care:
+
+modul de compresie să poată fi schimbat ușor;
+clasa care redă videoclipul să nu depindă direct de un anumit tip de compresie;
+în viitor să poată fi adăugate și alte tipuri de compresie fără modificarea clasei principale.
+
+Se dă următoarea interfață:
+
+public interface CompressionStrategy {
+    void compress();
+}
+
+1.5p. Testați soluția în metoda main prin crearea a 3 scenarii:
+
+redare video pe telefon
+redare video în browser web
+redare video pe smart TV
+
+Pentru fiecare scenariu, afișați în consolă ce tip de compresie este folosit și faptul că videoclipul este redat.
